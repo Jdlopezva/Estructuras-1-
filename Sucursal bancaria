@@ -1,0 +1,112 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Juan Lopez
+
+
+public class TestClass {
+    
+    static BufferedReader r = new BufferedReader (new InputStreamReader (System.in));
+    static ArrayList<Double> cuentas = new ArrayList<>();
+
+    public static void main(String args[]) throws IOException {
+    
+        int N=Integer.parseInt(r.readLine());    
+        
+        double[] P = Arrays.stream(r.readLine().split(" ")).mapToDouble(Double::parseDouble).toArray();
+
+        int Q=Integer.parseInt(r.readLine());   
+        
+        for (int i = 0; i < N; i++) cuentas.add(P[i]);
+             
+        //System.out.println(cuentas);
+            
+        for (int i = 0; i < Q; i++) {
+            operar(r.readLine());            
+        }
+        //System.out.println(cuentas);
+    
+    }
+    
+    public static void operar(String line){
+        
+        String[] input = line.split(" ");
+        String command = input[0];
+        int i= Integer.parseInt(input[1]);
+        
+        switch(command){
+            
+            case "consultar":
+                int j = Integer.parseInt(input[2]);
+                consultar(i-1, j-1);
+                break;
+                
+            case "depositar":                
+                double saldoDepositar = Double.parseDouble(input[2]);
+                depositar(i-1, saldoDepositar);
+                break;
+                
+            case "retirar":                
+                double saldoRetirar = Double.parseDouble(input[2]);
+                retirar(i-1, saldoRetirar);
+                break;
+                
+            default:
+                break;
+        }
+        
+    }
+    
+    public static void consultar(int i, int j){
+        
+        double min=cuentas.get(0);
+        double max=cuentas.get(0);
+        double sum=0;
+        
+        int range = j-i;   
+        
+        
+        for (int k = i; k <= range; k++) {
+            
+            double temp=cuentas.get(k);
+            
+            if(temp<min)min=temp;
+            if(temp>max)max=temp;
+            
+            sum+=temp;            
+            
+        }
+        
+        sum/=(range+1);
+        
+        System.out.printf("%.1f %.1f %.1f\n",min,max,sum);
+        
+    }
+    
+    public static void depositar(int i, double j){
+        
+        double saldo = cuentas.remove(i);
+        saldo+=j;
+        cuentas.add(i, saldo);
+        
+    }
+    
+    public static void retirar(int i, double j){
+        double saldo = cuentas.remove(i);
+        saldo-=j;
+        cuentas.add(i, saldo);
+        
+    }
+    
+}
