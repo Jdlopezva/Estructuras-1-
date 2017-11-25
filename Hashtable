@@ -1,0 +1,42 @@
+
+//imports for BufferedReader
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+//import for Scanner and other utility classes
+import java.util.*;
+
+
+// Warning: Printing unwanted or ill-formatted data to output will cause the test cases to fail
+
+class TestClass {
+    
+    static Hashtable<String,Integer> dict = new Hashtable<>();
+    
+    public static void main(String args[] ) throws Exception {
+
+
+        //Scanner
+        Scanner sc = new Scanner(System.in);
+        
+        while(sc.hasNext()){
+            int N = sc.nextInt();
+            dict.clear();
+            for (int i = 0; i < N; i++) {
+                String input= sc.next();                
+                if(dict.containsKey(input)){
+                    int k= dict.get(input);
+                    k++;
+                    dict.put(input, k);
+                    System.out.println(input+k);
+                }else{
+                    dict.put(input, 0);
+                    System.out.println("OK");
+                }
+                
+            }
+        }
+        
+
+    }
+}
