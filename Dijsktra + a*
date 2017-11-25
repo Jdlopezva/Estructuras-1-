@@ -1,0 +1,116 @@
+
+//imports for BufferedReader
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+//import for Scanner and other utility classes
+import java.util.*;
+
+
+// Warning: Printing unwanted or ill-formatted data to output will cause the test cases to fail
+
+class TestClass {
+    
+    
+    static HashMap<String,ArrayList<String>> dict = new HashMap<>();  
+    static ArrayList<String> ciudades= new ArrayList<>();
+    
+    public static void main(String args[] ) throws Exception {
+
+
+        //Scanner
+        Scanner sc = new Scanner(System.in);       
+        
+        int N = sc.nextInt();
+        
+        for (int i = 0; i < N; i++) {       
+
+            
+            String origen = sc.next();
+            String destino = sc.next();
+            
+            if(!ciudades.contains(origen))
+                ciudades.add(origen);
+            
+            if(!ciudades.contains(destino))
+                ciudades.add(destino);
+            
+            
+            if(!dict.containsKey(origen))
+                dict.put(origen, new ArrayList<>());   
+            
+            ArrayList<String> destinos = dict.get(origen);
+            
+            if(!destinos.contains(destino))
+                destinos.add(destino);               
+            
+            
+        }
+        
+        int q = sc.nextInt();
+        
+        for (int i = 0; i < q; i++) {
+            
+            String origen = sc.next();
+            String destino = sc.next();
+            int result = shortestPath(origen, destino);
+            
+            if(result>0){
+                System.out.printf("De %s a %s se puede llegar en %d vuelo(s)\n",origen,destino,result);                
+            }else{
+                System.out.printf("No hay rutas de %s a %s\n",origen,destino);
+            }
+            
+        }  
+
+    }
+    
+    public static int shortestPath(String origen,String destino){  
+        
+        if(origen.equals(destino))
+            return 0;
+        
+        Queue<String> queue = new LinkedList<>();
+        
+        HashMap<String,String> parent = new HashMap<>();
+        
+        HashMap<String,Boolean> visited = new HashMap<>();
+        
+        for (String ciudad : ciudades) visited.put(ciudad, false);     
+        visited.put(origen, Boolean.TRUE);   
+               
+        queue.add(origen);
+        
+        while(!queue.isEmpty()){ 
+            
+            String current=queue.poll();
+            
+            if(current.equals(destino)){
+                int count=0;
+                while(!current.equals(origen)){
+                    current=parent.get(current);
+                    count++;
+                }
+                return count;
+            }
+            
+            ArrayList<String> hijos = dict.get(current);
+            
+            if(hijos!=null){
+                for(String hijo: hijos ){                      
+                    if(!visited.get(hijo)){
+                        queue.add(hijo);
+                        visited.put(hijo, Boolean.TRUE);  
+                        parent.put(hijo, current);
+                    }       
+                }                
+            }
+            
+        }   
+        
+        return -1;
+    }
+    
+    
+}
+
